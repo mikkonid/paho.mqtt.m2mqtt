@@ -610,6 +610,14 @@ namespace uPLibrary.Networking.M2Mqtt
                 Fx.StartThread(this.ProcessInflightThread);
 
                 this.IsConnected = true;
+            } 
+            else
+            {
+                // client must close connection
+                this.Close();
+
+                // client raw disconnection
+                this.OnConnectionClosed();
             }
             return connack.ReturnCode;
         }
@@ -1602,6 +1610,7 @@ namespace uPLibrary.Networking.M2Mqtt
                     {
                         // wake up thread that will notify connection is closing
                         this.OnConnectionClosing();
+                        break;
                     }
                 }
                 catch (Exception e)
